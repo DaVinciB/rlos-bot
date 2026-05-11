@@ -36,7 +36,7 @@ module.exports = {
     let team1 = [];
     let team2 = [];
 
-    // Alternate players between teams
+    // Alternate players
     playerList.forEach((player, index) => {
       if (index % 2 === 0) {
         team1.push(player);
@@ -49,7 +49,7 @@ module.exports = {
     const total1 = team1.reduce((sum, p) => sum + p.mmr, 0);
     const total2 = team2.reduce((sum, p) => sum + p.mmr, 0);
 
-    // Format teams
+    // Format team output
     const formatTeam = team =>
       team
         .map(p => `🎮 ${p.username} (${p.mmr})`)
