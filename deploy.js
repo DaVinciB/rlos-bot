@@ -2,9 +2,10 @@ const { REST, Routes } = require('discord.js');
 require('dotenv').config();
 
 const signupCommand = require('./commands/signup');
-
+const playersCommand = require('./commands/players');
 const commands = [
   signupCommand.data.toJSON(),
+  playersCommand.data.toJSON(),
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
