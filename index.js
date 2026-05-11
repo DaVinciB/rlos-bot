@@ -1,7 +1,12 @@
 require('dotenv').config();
 
 const fs = require('fs');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  Events
+} = require('discord.js');
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
@@ -18,25 +23,36 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}`);
+client.once(Events.ClientReady, readyClient => {
+  console.log(`Logged in as ${readyClient.user.tag}`);
 });
 
-client.on('interactionCreate', async interaction => {
+client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
 
-  if (!command) return;
+  if (!command) {
+    console.log('Command not found');
+    return;
+  }
 
   try {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
-    await interaction.reply({
-      content: 'Error running command.',
-      ephemeral: true,
-    });
+
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: 'There was an error executing this command!',
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: 'There was an error executing this command!',
+        ephemeral: true,
+      });
+    }
   }
 });
 
