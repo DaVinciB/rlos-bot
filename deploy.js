@@ -11,17 +11,14 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 (async () => {
   try {
-    console.log('Deploying guild commands...');
+    console.log('Deploying commands...');
 
     await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.CLIENT_ID,
-        process.env.SERVER_ID
-      ),
+      Routes.applicationCommands(process.env.CLIENT_ID),
       { body: commands },
     );
 
-    console.log('Guild commands deployed successfully.');
+    console.log('Commands deployed successfully.');
   } catch (error) {
     console.error(error);
   }
