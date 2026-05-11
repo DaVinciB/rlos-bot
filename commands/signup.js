@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const fs = require('fs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,9 +14,33 @@ module.exports = {
 
   async execute(interaction) {
     const mmr = interaction.options.getInteger('mmr');
+    const user = interaction.user;
+
+    // Load players
+    let players = {};
+
+    try {
+      players = JSON.parse(
+        fs.readFileSync('./data/players.json')
+      );
+    } catch (err) {
+      console.error(err);
+    }
+
+    // Save player
+    players[user.id] = {
+      username: user.username,
+      mmr: mmr,
+    };
+
+    // Write back to file
+    fs.writeFileSync(
+      './data/players.json',
+      JSON.stringify(players, null, 2)
+    );
 
     await interaction.reply(
-      `${interaction.user.username} signed up with ${mmr} MMR`
+      `✅ ${user.username} signed up with ${mmr} MMR`
     );
   },
 };
