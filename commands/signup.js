@@ -13,10 +13,10 @@ module.exports = {
     ),
 
   async execute(interaction) {
+
     const mmr = interaction.options.getInteger('mmr');
     const user = interaction.user;
 
-    // Load players
     let players = {};
 
     try {
@@ -27,13 +27,11 @@ module.exports = {
       console.error(err);
     }
 
-    // Save player
     players[user.id] = {
       username: user.username,
       mmr: mmr,
     };
 
-    // Write back to file
     fs.writeFileSync(
       './data/players.json',
       JSON.stringify(players, null, 2)
