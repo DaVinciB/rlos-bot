@@ -4,11 +4,13 @@ require('dotenv').config();
 const signupCommand = require('./commands/signup');
 const playersCommand = require('./commands/players');
 const teamsCommand = require('./commands/teams');
+const divisionsCommand = require('./commands/divisions');
 
 const commands = [
   signupCommand.data.toJSON(),
   playersCommand.data.toJSON(),
   teamsCommand.data.toJSON(),
+  divisionsCommand.data.toJSON(),
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
